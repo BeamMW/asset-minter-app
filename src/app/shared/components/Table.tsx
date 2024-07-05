@@ -84,7 +84,7 @@ const Table: React.FC<TableProps> = ({ keyBy, data, dataToHighlight, config, row
     return res;
   };
 
-  const [filterBy, setFilterBy] = useState(4);
+  const [filterBy, setFilterBy] = useState(0);
   const [td, setTd] = useState(updateTableData(data));
   const [tdTmp, setTdTmp] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
