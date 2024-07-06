@@ -1,12 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { styled } from '@linaria/react';
 import { Button, Window, Input, BackControl } from '@app/shared/components';
-import { css } from '@linaria/core';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
-import { CreateAsset, UserWithdraw } from '@core/api';
+import { CreateAsset } from '@core/api';
 import { ROUTES } from '@app/shared/constants';
+import CopyIconButton from '@app/shared/components/CopyIconButton';
+import { css } from '@linaria/core';
 
 interface CreateFormData {
   schema: string;
@@ -35,12 +35,6 @@ const Command = styled.div`
   background-color: rgba(0, 246, 210, .1);
   border-radius: 10px;
   margin-bottom: 10px;
-
-  > .text {
-    font-family: 'CourierRegular';
-    margin-top: 30px;
-    word-wrap: break-word;
-  }
 
   > .empty-text {
     font-style: italic;
@@ -119,6 +113,14 @@ const SectionSubTitle = styled.div<{valid?: boolean}>`
   margin-top: 20px;
 `;
 
+
+const CommandText = styled.div`
+  font-family: 'CourierRegular';
+  margin-top: 30px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+`;
+
 const CreatePage = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [regCommand, setRegCommand] = useState('');
@@ -139,7 +141,7 @@ const CreatePage = () => {
         site_url.length > 0 ? 'OPT_SITE_URL=' + site_url + ';' : ''}${
         pdf_url.length > 0 ? 'OPT_PDF_URL=' + pdf_url + ';' : ''}${
         favicon_url.length > 0 ? 'OPT_FAVICON_URL=' + favicon_url + ';' : ''}${
-        logo_url.length > 0 ? 'OPT_LOGO_URL=' + ratio + ';' : ''}${
+        logo_url.length > 0 ? 'OPT_LOGO_URL=' + logo_url + ';' : ''}${
         color.length > 0 ? 'OPT_COLOR=' + color + ';' : ''}`;
   };
 
@@ -362,7 +364,8 @@ const CreatePage = () => {
             <SectionTitle>REGISTRATION COMMAND</SectionTitle>
             {regCommand.length > 0 ? 
             <>
-              <div className='text'>{regCommand}</div>
+              <CommandText>{regCommand}</CommandText>
+              <CopyIconButton onCopy={() => regCommand} />
               <div className='copy-text'>Copy and paste this command in command line</div>
             </> :
             <div className='empty-text'>Enter asset parameters</div>}
