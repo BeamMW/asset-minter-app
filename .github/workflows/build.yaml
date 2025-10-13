@@ -3,12 +3,12 @@ name: Build and Package .dapp
 on:
   push:
     branches:
-      - mainnet
-      - workflow-test
+      - main
+      - 9-add-automatic-build-workflow
   pull_request:
     branches:
-      - mainnet
-      - workflow-test
+      - main
+      - 9-add-automatic-build-workflow
 
 jobs:
   build:
