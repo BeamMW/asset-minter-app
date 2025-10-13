@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    uses: BeamMW/beam-asset-minter-app/.github/workflows/make-dapp.yaml@9-add-automatic-build-workflow
+    uses: BeamMW/asset-minter-app/.github/workflows/make-dapp.yaml@9-add-automatic-build-workflow
     with:
       manifest_name: 'Beam Asset Minter'
       manifest_description: 'Mint confidential assets with provably limited supply'
