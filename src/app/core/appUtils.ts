@@ -140,8 +140,11 @@ export function parseMetadata(metadata) {
   const splittedMetadata = metadata.split(';');
   splittedMetadata.shift();
   const obj = splittedMetadata.reduce((accumulator, value, index) => {
-    const data = value.split(/=(.*)/s);
-    return {...accumulator, [data[0]]: data[1]};
+    const equalIndex = value.indexOf('=');
+    if (equalIndex === -1) return accumulator;
+    const key = value.substring(0, equalIndex);
+    const val = value.substring(equalIndex + 1);
+    return {...accumulator, [key]: val};
   }, {});
   return obj;
 }

@@ -208,7 +208,7 @@ const CreatePage = () => {
     if (!short_name) {
       errorsValidation.short_name = `Required`;
     } else if (short_name.length > 6) {
-      errorsValidation.short_name = `Maximum characters are 6`;
+      errorsValidation.short_name = `Short name is too long(max. 6 characters)`;
     } else if (!name_regex.test(short_name)) {
       errorsValidation.short_name = `Incorrect value`;
     }
@@ -222,7 +222,7 @@ const CreatePage = () => {
     if (!ratio) {
       errorsValidation.ratio = `Required`;
     } else if (parseFloat(ratio) > RATIO_MAX) {
-      errorsValidation.ratio = `Value is too big`;
+      errorsValidation.ratio = `Ratio is too big`;
     } else if (!num_regex.test(ratio)) {
       errorsValidation.ratio = `Incorrect value`;
     }
@@ -233,32 +233,32 @@ const CreatePage = () => {
       errorsValidation.limit = `Incorrect value`;
     }
 
-    if (short_descr.length > 124) {
-      errorsValidation.short_descr = `Value is too big`;
+    if (short_descr.length > 124) { // 124 is the core limit
+      errorsValidation.short_descr = `Short description is too long(max. 124 characters)`;
     }
 
-    if (long_descr.length > 124) {
-      errorsValidation.long_descr = `Value is too big`;
+    if (long_descr.length > 1024) { // 1024 is the core limit
+      errorsValidation.long_descr = `Long description is too long(max. 1024 characters)`;
     }
 
     if (site_url.length > 0 && !url_regex.test(site_url)) {
-      errorsValidation.site_url = `Wrong url format`;
+      errorsValidation.site_url = `Wrong URL format`;
     }
 
     if (pdf_url.length > 0 && !url_regex.test(pdf_url)) {
-      errorsValidation.pdf_url = `Wrong url format`;
+      errorsValidation.pdf_url = `Wrong URL format`;
     }
 
     if (favicon_url.length > 0 && !url_regex.test(favicon_url)) {
-      errorsValidation.favicon_url = `Wrong url format`;
+      errorsValidation.favicon_url = `Wrong URL format`;
     }
 
     if (logo_url.length > 0 && !url_regex.test(logo_url)) {
-      errorsValidation.logo_url = `Wrong url format`;
+      errorsValidation.logo_url = `Wrong URL format`;
     }
 
     if (color.length > 0 && !color_regex.test(color)) {
-      errorsValidation.color = `Wrong color`;
+      errorsValidation.color = `Wrong color format`;
     }
 
     return errorsValidation;
