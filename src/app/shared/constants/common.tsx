@@ -1,6 +1,6 @@
 
-// export const CID =  '4e09257c400e06209d6ef1885aeaa242dda6e2591af9380311f7fc087bcb6698';
-export const CID = '518b02202c05623f50b0c75efd900afdbb571f3e68c7a1dce7117d821f5ff6f0'; //dappnet
+export const CID =  '295fe749dc12c55213d1bd16ced174dc8780c020f59cb17749e900bb0c15d868'; //mainnet
+//export const CID = '518b02202c05623f50b0c75efd900afdbb571f3e68c7a1dce7117d821f5ff6f0'; //dappnet
 export const GROTHS_IN_BEAM = 100000000;
 export const BEAMX_TVL = 100000000;
 export const BEAMX_TVL_STR = '100 000 000';
