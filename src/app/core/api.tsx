@@ -25,7 +25,7 @@ export function LoadOwnedAssets<T = any>(): Promise<T> {
 
 export function CreateAsset<T = any>(metadata: string, limit: string): Promise<T> {
     return new Promise((resolve, reject) => {
-        Utils.invokeContract("action=create_token,metadata=" + metadata + ",limit=" + toGroths(parseInt(limit)) + ",cid="+CID, 
+        Utils.invokeContract("action=create_token,metadata=\"" + metadata + "\",limit=" + toGroths(parseInt(limit)) + ",cid="+CID, 
         (error, result, full) => {
             onMakeTx(error, result, full);
         });

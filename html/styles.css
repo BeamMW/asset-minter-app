@@ -746,14 +746,20 @@
 .shwovl0{margin-top:20px;width:100%;overflow:hidden;}
 .evtn89f{text-align:center;margin-top:72px;font-size:14px;font-style:italic;color:#8da1ad;}
 
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/@linaria/webpack5-loader/lib/outputCssLoader.js?cacheProvider=!./src/app/shared/components/CopyIconButton.tsx ***!
+  \**********************************************************************************************************************************************************************************************************/
+.c1498mp8{cursor:pointer;}
+
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/@linaria/webpack5-loader/lib/outputCssLoader.js?cacheProvider=!./src/app/containers/Main/containers/CreatePage/CreatePage.tsx ***!
   \**************************************************************************************************************************************************************************************************************************/
-.c1nnv12f{padding:20px;background-color:rgba(0,246,210,.1);border-radius:10px;margin-bottom:10px;}.c1nnv12f > .text{font-family:'CourierRegular';margin-top:30px;word-wrap:break-word;}.c1nnv12f > .empty-text{font-style:italic;text-align:center;opacity:0.5;margin:30px 0 10px;}.c1nnv12f > .copy-text{font-style:italic;text-align:center;opacity:0.5;margin:30px 0;}
+.c1nnv12f{padding:20px;background-color:rgba(0,246,210,.1);border-radius:10px;margin-bottom:10px;}.c1nnv12f > .empty-text{font-style:italic;text-align:center;opacity:0.5;margin:30px 0 10px;}.c1nnv12f > .copy-text{font-style:italic;text-align:center;opacity:0.5;margin:30px 0;}
 .cm2hwv7{margin:0 auto;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;width:100%;}.cm2hwv7 > .mandatory{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;height:100%;width:50%;min-height:0;}.cm2hwv7 > .mandatory > .items{padding:20px;background-color:rgba(255,255,255,.05);border-radius:10px;margin-bottom:20px;}.cm2hwv7 > .side{margin-left:10px;width:50%;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}.cm2hwv7 > .side > .optional{padding:20px;background-color:rgba(255,255,255,.05);border-radius:10px;}
 .txo0dy0{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;margin-bottom:20px;}.txo0dy0 > .show-reg{margin:0 0 0 20px;}.txo0dy0 > .create-asset{margin:0 0 0 auto;}
 .s1bxnvk2{font-size:14px;font-weight:700;-webkit-letter-spacing:3.11111px;-moz-letter-spacing:3.11111px;-ms-letter-spacing:3.11111px;letter-spacing:3.11111px;}
 .s1p0d6a4{font-size:14px;font-weight:400;color:var(--s1p0d6a4-0);margin-top:20px;}
+.c1thau9h{font-family:'CourierRegular';margin-top:30px;margin-bottom:10px;word-wrap:break-word;}
 
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/@linaria/webpack5-loader/lib/outputCssLoader.js?cacheProvider=!./src/app/containers/Main/containers/AssetPage/AssetPage.tsx ***!
