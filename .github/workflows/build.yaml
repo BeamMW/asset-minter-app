@@ -16,6 +16,7 @@ jobs:
     with:
       manifest_name: 'Beam Asset Minter'
       manifest_description: 'Mint confidential assets with provably limited supply'
+      manifest_icon: 'localapp/app/assets/beam asset minter.png'
       manifest_version_prefix: "1.0"
       manifest_guid: '6e5151edf286458da42d11f3aef4969d'
       dapp_name: 'beam-asset-minter'
