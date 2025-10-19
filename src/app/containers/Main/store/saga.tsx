@@ -55,8 +55,12 @@ export function* loadParamsSaga(
         assetsList.unshift(spliced[0]);
       });
 
+      const processedOwnedAssets = ownedAssets.map(ownedAsset => {
+        return assetsList.find(asset => asset.aid === ownedAsset.aid);
+      }).filter(Boolean);
+
       yield put(actions.setAssetsList(assetsList));
-      yield put(actions.setOwnedAssetsList(ownedAssets));
+      yield put(actions.setOwnedAssetsList(processedOwnedAssets));
         
       const isLoaded = yield select(selectIsLoaded());
       if (!isLoaded) {

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { styled } from '@linaria/react';
 import { Button, Window, BackControl, AssetIcon } from '@app/shared/components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAssetFromList, selectIsOwnedAsset } from '../../store/selectors';
 import { setPopupState } from '@app/containers/Main/store/actions';
@@ -104,7 +104,7 @@ const CreatePage = () => {
   }, [asset]);
 
   const onPreviousClick = () => {
-    navigate(ROUTES.MAIN.MAIN_PAGE);
+    navigate(-1);
   };
 
   const handleWithdrawClick = () => {

@@ -29,6 +29,11 @@ const ButtonsContainer = styled.div`
     height: 38px;
   }
 
+  > .my-assets {
+    width: 200px;
+    height: 38px;
+  }
+
   > .create-asset {
     width: 200px;
     height: 38px;
@@ -48,6 +53,10 @@ const MainPage: React.FC = () => {
     navigate(ROUTES.MAIN.ASSET_LIST_PAGE);
   };
 
+  const handleMyAssetsClick: React.MouseEventHandler = () => {
+    navigate(ROUTES.MAIN.MY_ASSETS_PAGE);
+  };
+
 
   return (
     <>
@@ -59,6 +68,11 @@ const MainPage: React.FC = () => {
               onClick={handleAssetListClick}
               pallete="purple" 
               variant="regular">asset list</Button>
+            <Button
+              className='my-assets'
+              onClick={handleMyAssetsClick}
+              pallete="blue" 
+              variant="regular">my assets</Button>
             <Button
               className='create-asset'
               onClick={handleCreateClick}
