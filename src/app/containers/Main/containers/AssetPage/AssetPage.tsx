@@ -7,7 +7,7 @@ import { selectAssetFromList, selectIsOwnedAsset } from '../../store/selectors';
 import { setPopupState } from '@app/containers/Main/store/actions';
 import { ViewAsset } from '@core/api';
 import { calcMintedAmount, fromGroths } from '@core/appUtils';
-import { ROUTES, CID } from '@app/shared/constants';
+import { ROUTES, CID, BLOCK_TIME_MS } from '@app/shared/constants';
 import { selectSystemState } from '@app/shared/store/selectors';
 
 
@@ -132,7 +132,7 @@ const CreatePage = () => {
   }
 
   const heightDiff = systemState.current_height - asset.height;
-  const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * 60000;
+  const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * BLOCK_TIME_MS;
   const dateDiff = new Date(timestampDiff);
   const dateFromString = ('0' + dateDiff.getDate()).slice(-2) + '.' 
     + ('0' + (dateDiff.getMonth()+1)).slice(-2) + '.' + dateDiff.getFullYear();

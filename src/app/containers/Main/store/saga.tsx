@@ -1,6 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { navigate } from '@app/shared/store/actions';
-import { ROUTES, CURRENCIES, CID } from '@app/shared/constants';
+import { ROUTES, CURRENCIES, CID, BLOCK_TIME_MS } from '@app/shared/constants';
 import { Asset } from '@core/types';
 import { LoadAssetsList, LoadOwnedAssets, ViewAsset } from '@core/api';
 import { calcRelayerFee, parseMetadata } from '@core/appUtils';
@@ -29,7 +29,7 @@ export function* loadParamsSaga(
         assetsList[i]['coin'] = assetsList[i].parsedMetadata['N'];
         assetsList[i]['minted'] = fromGroths(parseInt(calcMintedAmount(assetsList[i].mintedLo, assetsList[i].mintedHi)));
         const heightDiff = systemState.current_height - assetsList[i].height;
-        const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * 60000;
+        const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * BLOCK_TIME_MS;
         assetsList[i]['emission'] = new Date(timestampDiff);
 
         if (assetsList[i].owner_cid !== undefined) {
