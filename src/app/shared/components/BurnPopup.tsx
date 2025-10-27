@@ -8,6 +8,7 @@ import { toGroths } from '@core/appUtils';
 import { styled } from '@linaria/react';
 import { css } from '@linaria/core';
 import { selectAppParams, selectPopupState } from '@app/containers/Main/store/selectors';
+import { BurnAsset } from '@core/api';
 
 interface BurnPopupProps {
   visible?: boolean;
@@ -52,8 +53,8 @@ const BurnPopup: React.FC<BurnPopupProps> = ({ visible, onCancel }) => {
     isInitialValid: false,
     //validate: (e) => validate(e, setHint),
     onSubmit: (value) => {
-      // TODO: Implement burn asset functionality
-      console.log('Burn amount:', value.burn_amount, 'Asset ID:', popupsState.aid);
+      const burnAmount = toGroths(parseFloat(value.burn_amount));
+      BurnAsset(burnAmount, parseInt(popupsState.aid));
       onCancel();
       resetForm();
     },

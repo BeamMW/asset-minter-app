@@ -21,7 +21,7 @@ export const NETWORKS: Record<Network, NetworkConfig> = {
     name: 'mainnet',
     blockTimeMs: 60000, // 60 seconds
     cid: '295fe749dc12c55213d1bd16ced174dc8780c020f59cb17749e900bb0c15d868',
-    blackholeCid: '5ab408982b148210e88f180114f10222a2235eafeede0a3a224fda0e523e17b7', // Update with mainnet blackhole CID
+    blackholeCid: '5ab408982b148210e88f180114f10222a2235eafeede0a3a224fda0e523e17b7',
     currencies: [
       {
         name: 'bUSDT',

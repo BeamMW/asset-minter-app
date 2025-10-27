@@ -126,8 +126,7 @@ const CreatePage = () => {
       type: 'burn',
       state: true,
       aid: params.id,
-      //ratio: asset.parsedMetadata['NTH_RATIO'],
-      //n: asset.parsedMetadata['N']
+      n: asset.parsedMetadata['N']
     }));
   }
 
