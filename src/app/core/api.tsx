@@ -1,6 +1,6 @@
 import Utils from '@core/utils.js';
 import { toast } from 'react-toastify';
-import { CID } from '@app/shared/constants';
+import { CID, Blackhole_CID } from '@app/shared/constants';
 import { toGroths } from './appUtils';
 
 
@@ -103,6 +103,16 @@ export function UserWithdraw<T = any>(amount: number, aid: number): Promise<T> {
         (error, result, full) => {
             console.log(result, full)
             //onMakeTx(error, result, full);
+            resolve(result);
+        });
+    });
+}
+
+export function BurnAsset<T = any>(amount: number, aid: number): Promise<T> {
+    return new Promise((resolve, reject) => {
+        Utils.invokeContract("role=manager,action=deposit,cid=" + Blackhole_CID + ",aid=" + aid + ",amount=" + amount, 
+        (error, result, full) => {
+            onMakeTx(error, result, full);
             resolve(result);
         });
     });

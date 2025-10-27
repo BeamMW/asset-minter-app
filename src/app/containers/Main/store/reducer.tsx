@@ -19,6 +19,9 @@ const initialState: MintorStateType = {
   popupsState: {
     withdraw: {
       isVisible: false,
+    },
+    burn: {
+      isVisible: false,
     }
   },
   funds: [],

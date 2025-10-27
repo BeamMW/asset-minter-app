@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { styled } from '@linaria/react';
 import { Button, Window, BackControl, AssetIcon } from '@app/shared/components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAssetFromList, selectIsOwnedAsset } from '../../store/selectors';
 import { setPopupState } from '@app/containers/Main/store/actions';
 import { ViewAsset } from '@core/api';
 import { calcMintedAmount, fromGroths } from '@core/appUtils';
-import { ROUTES, CID } from '@app/shared/constants';
+import { ROUTES, CID, BLOCK_TIME_MS } from '@app/shared/constants';
 import { selectSystemState } from '@app/shared/store/selectors';
 
 
@@ -80,7 +80,11 @@ const TopContainer = styled.div`
   margin-bottom: 20px;
 
   > .mint-asset {
-    margin: 0 0 0 auto;
+    margin: 0 10px 0 auto;
+  }
+
+  > .burn-asset {
+    margin: 0 0 0 0;
   }
 `;
 
@@ -104,7 +108,7 @@ const CreatePage = () => {
   }, [asset]);
 
   const onPreviousClick = () => {
-    navigate(ROUTES.MAIN.MAIN_PAGE);
+    navigate(-1);
   };
 
   const handleWithdrawClick = () => {
@@ -117,8 +121,17 @@ const CreatePage = () => {
     }));
   }
 
+  const handleBurnClick = () => {
+    dispatch(setPopupState({
+      type: 'burn',
+      state: true,
+      aid: params.id,
+      n: asset.parsedMetadata['N']
+    }));
+  }
+
   const heightDiff = systemState.current_height - asset.height;
-  const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * 60000;
+  const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * BLOCK_TIME_MS;
   const dateDiff = new Date(timestampDiff);
   const dateFromString = ('0' + dateDiff.getDate()).slice(-2) + '.' 
     + ('0' + (dateDiff.getMonth()+1)).slice(-2) + '.' + dateDiff.getFullYear();
@@ -134,6 +147,11 @@ const CreatePage = () => {
             pallete="green" 
             variant="regular">mint asset</Button>
         }
+        <Button
+          className='burn-asset'
+          onClick={handleBurnClick}
+          pallete="red" 
+          variant="regular">burn asset</Button>
       </TopContainer>
       <Container>
         <div className='title-row'>

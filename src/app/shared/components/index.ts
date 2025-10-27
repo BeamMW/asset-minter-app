@@ -8,6 +8,7 @@ export { default as Rate } from './Rate';
 export { default as Toggle } from './Toggle';
 export { default as DepositPopup } from './DepositPopup';
 export { default as WithdrawPopup } from './WithdrawPopup';
+export { default as BurnPopup } from './BurnPopup';
 export { default as Select } from './Select';
 export { default as Table } from './Table';
 export { default as CurrInput } from './CurrInput';
