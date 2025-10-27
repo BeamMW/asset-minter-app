@@ -4,7 +4,7 @@ import Utils from '@core/utils.js';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPopupsState } from '@app/containers/Main/store/selectors';
-import { DepositPopup, WithdrawPopup } from './';
+import { DepositPopup, WithdrawPopup, BurnPopup } from './';
 import { setPopupState } from '@app/containers/Main/store/actions';
 import { css } from '@linaria/core';
 
@@ -94,6 +94,9 @@ const Window: React.FC<WindowProps> = ({
 
       {<WithdrawPopup visible={popupsState.withdraw.isVisible} onCancel={()=>{
         dispatch(setPopupState({type: 'withdraw', state: false}));
+      }}/>}
+      {<BurnPopup visible={popupsState.burn.isVisible} onCancel={()=>{
+        dispatch(setPopupState({type: 'burn', state: false}));
       }}/>}
     </>
   );

@@ -14,6 +14,7 @@ export interface MintorStateType {
   appParams: FaucetAppParams;
   popupsState: {
     withdraw: Popup;
+    burn: Popup;
   };
   rate: number;
   relayerFee: any;

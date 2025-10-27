@@ -80,7 +80,11 @@ const TopContainer = styled.div`
   margin-bottom: 20px;
 
   > .mint-asset {
-    margin: 0 0 0 auto;
+    margin: 0 10px 0 auto;
+  }
+
+  > .burn-asset {
+    margin: 0 0 0 0;
   }
 `;
 
@@ -117,6 +121,16 @@ const CreatePage = () => {
     }));
   }
 
+  const handleBurnClick = () => {
+    dispatch(setPopupState({
+      type: 'burn',
+      state: true,
+      aid: params.id,
+      //ratio: asset.parsedMetadata['NTH_RATIO'],
+      //n: asset.parsedMetadata['N']
+    }));
+  }
+
   const heightDiff = systemState.current_height - asset.height;
   const timestampDiff = systemState.current_state_timestamp * 1000 - heightDiff * 60000;
   const dateDiff = new Date(timestampDiff);
@@ -134,6 +148,11 @@ const CreatePage = () => {
             pallete="green" 
             variant="regular">mint asset</Button>
         }
+        <Button
+          className='burn-asset'
+          onClick={handleBurnClick}
+          pallete="red" 
+          variant="regular">burn asset</Button>
       </TopContainer>
       <Container>
         <div className='title-row'>
