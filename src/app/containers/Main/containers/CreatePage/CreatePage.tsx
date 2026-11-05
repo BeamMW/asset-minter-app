@@ -14,7 +14,6 @@ interface CreateFormData {
   unit_name: string;
   short_name: string;
   sm_unit_name: string;
-  ratio: string;
   short_descr: string;
   long_descr: string;
   site_url: string;
@@ -28,7 +27,8 @@ interface CreateFormData {
 const COMMAND_BASIS_START = './beam-wallet asset_reg --pass 1 -n 127.0.0.1:10000 --asset_meta "';
 const PRE_COMMAND = 'STD:SCH_VER=1;'
 const COMMAND_BASIS_END = '" --fee 100000 --enable_assets';
-const RATIO_MAX = Math.pow(2, 128) - 2;
+// Metadata uses smallest units per whole unit, not the decimal-place count.
+const ASSET_UNIT_RATIO = '100000000';
 
 const Command = styled.div`
   padding: 20px;
@@ -125,17 +125,16 @@ const CreatePage = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [regCommand, setRegCommand] = useState('');
   const [isCommandVisible, setIsCommandVisible] = useState(false);
-  const [metadata, setMetadata] = useState('');
   const navigate = useNavigate();
 
   const generateMetadata = ({asset_name, unit_name, 
-    short_name, sm_unit_name, ratio, short_descr, long_descr,
+    short_name, sm_unit_name, short_descr, long_descr,
     site_url, pdf_url, favicon_url, logo_url, color}) => {
       return `${PRE_COMMAND}${asset_name.length > 0 ? 'N=' + asset_name + ';' : ''}${
         unit_name.length > 0 ? 'UN=' + unit_name + ';' : ''}${
         short_name.length > 0 ? 'SN=' + short_name + ';' : ''}${
         sm_unit_name.length > 0 ? 'NTHUN=' + sm_unit_name + ';' : ''}${
-        ratio.length > 0 ? 'NTH_RATIO=' + ratio + ';' : ''}${
+        'NTH_RATIO=' + ASSET_UNIT_RATIO + ';'}${
         short_descr.length > 0 ? 'OPT_SHORT_DESC=' + short_descr + ';' : ''}${
         long_descr.length > 0 ? 'OPT_LONG_DESC=' + long_descr + ';' : ''}${
         site_url.length > 0 ? 'OPT_SITE_URL=' + site_url + ';' : ''}${
@@ -157,7 +156,6 @@ const CreatePage = () => {
         unit_name,
         short_name,
         sm_unit_name,
-        ratio,
         limit,
         short_descr,
         long_descr,
@@ -168,13 +166,12 @@ const CreatePage = () => {
         color
     } = formValues;
 
-    if (asset_name.length > 0 ||
+    if (!Object.values(formValues).some(value => value.includes(';')) &&
+        (asset_name.length > 0 ||
         unit_name.length > 0 ||
         short_name.length > 0 ||
-        sm_unit_name.length > 0 ||
-        ratio.length > 0) {
+        sm_unit_name.length > 0)) {
       const metadata = generateMetadata(formValues);
-      setMetadata(metadata);
       setRegCommand(generateRegCommand(metadata));
     } else {
       setRegCommand('');
@@ -188,7 +185,6 @@ const CreatePage = () => {
     // }
 
     const name_regex = new RegExp('^[a-zA-Z0-9]*$');
-    const num_regex = new RegExp('^[0-9]*$');
     const num_lim_regex = new RegExp('^([0-9]*[.])?[0-9]+$');
     const url_regex = new RegExp('^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$');
     const color_regex = new RegExp('^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
@@ -217,14 +213,6 @@ const CreatePage = () => {
       errorsValidation.sm_unit_name = `Required`;
     } else if (!name_regex.test(sm_unit_name)) {
       errorsValidation.sm_unit_name = `Incorrect value`;
-    }
-
-    if (!ratio) {
-      errorsValidation.ratio = `Required`;
-    } else if (parseFloat(ratio) > RATIO_MAX) {
-      errorsValidation.ratio = `Ratio is too big`;
-    } else if (!num_regex.test(ratio)) {
-      errorsValidation.ratio = `Incorrect value`;
     }
 
     if (!limit) {
@@ -261,6 +249,13 @@ const CreatePage = () => {
       errorsValidation.color = `Wrong color format`;
     }
 
+    // A separator in a value could inject a second NTH_RATIO metadata field.
+    Object.entries(formValues).forEach(([field, value]) => {
+      if (field !== 'limit' && value.includes(';')) {
+        errorsValidation[field] = 'Semicolons are not allowed in metadata values';
+      }
+    });
+
     return errorsValidation;
   };
 
@@ -271,7 +266,6 @@ const CreatePage = () => {
         unit_name: '',
         short_name: '',
         sm_unit_name: '',
-        ratio: '100000000',
         short_descr: '',
         long_descr: '',
         site_url: '',
@@ -287,8 +281,10 @@ const CreatePage = () => {
     validate: (e) => validate(e),
   });
 
-  const subm = () => {
-    CreateAsset(metadata, values.limit);
+  const subm = async () => {
+    const errors = await formik.validateForm();
+    if (Object.keys(errors).length > 0) return;
+    CreateAsset(generateMetadata(values), values.limit);
     navigate(ROUTES.MAIN.MAIN_PAGE);
   }
 
@@ -296,7 +292,6 @@ const CreatePage = () => {
   const handleUnitNameChange = (unit_name: string) => setFieldValue('unit_name', unit_name, true);
   const handleShortNameChange = (short_name: string) => setFieldValue('short_name', short_name, true);
   const handleSmallestUNChange = (sm_unit_name: string) => setFieldValue('sm_unit_name', sm_unit_name, true);
-  const handleRatioChange = (ratio: string) => setFieldValue('ratio', ratio, true);
   const handleShortDescrChange = (short_descr: string) => setFieldValue('short_descr', short_descr, true);
   const handleLongDescrChange = (long_descr: string) => setFieldValue('long_descr', long_descr, true);
   const handleSiteUrlChange = (site_url: string) => setFieldValue('site_url', site_url, true);
@@ -320,7 +315,6 @@ const CreatePage = () => {
   const isUnitNameValid = () => !errors.unit_name;
   const isShortNameValid = () => !errors.short_name;
   const isSmallestUNValid = () => !errors.sm_unit_name;
-  const isRatioValid = () => !errors.ratio;
   const isShortDescrValid = () => !errors.short_descr;
   const isLongDescrValid = () => !errors.long_descr;
   const isSiteUrlValid = () => !errors.site_url;
@@ -407,14 +401,14 @@ const CreatePage = () => {
                 label={errors.sm_unit_name}
                 variant="prop"
                 name="sm_unit_name"/>
-              <SectionSubTitle valid={isRatioValid()}>Ratio</SectionSubTitle>
-              <Input placeholder="100000000"
-                onChangeHandler={handleRatioChange}
-                valid={isRatioValid()}
-                value={values.ratio}
-                label={errors.ratio}
+              <SectionSubTitle valid>Decimal places (fixed)</SectionSubTitle>
+              <Input
+                value="8"
+                disabled
+                aria-label="Decimal places (fixed)"
+                label="All Confidential Assets use 8 decimal places: 100,000,000 smallest units per asset unit. NTH_RATIO is descriptive metadata, not an on-chain precision setting."
                 variant="prop"
-                name="ratio"/>
+                name="decimal_places"/>
               <SectionSubTitle valid={isLimitValid()}>Max supply</SectionSubTitle>
               <Input placeholder="100000000"
                 onChangeHandler={handleLimitChange}
