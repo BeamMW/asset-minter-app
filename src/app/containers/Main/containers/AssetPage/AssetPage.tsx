@@ -167,8 +167,15 @@ const CreatePage = () => {
           <div className='value'>{asset.parsedMetadata['NTHUN']}</div>
         </div>
         <div className='row'>
-          <div className='title'>Ratio</div>
-          <div className='value'>{asset.parsedMetadata['NTH_RATIO'] > 0 ? asset.parsedMetadata['NTH_RATIO'] : '100000000'}</div>
+          <div className='title'>Decimal places</div>
+          <div className='value'>8 (100,000,000 smallest units per asset unit)</div>
+        </div>
+        <div className='row'>
+          <div className='title'>Declared ratio (metadata only)</div>
+          <div className='value'>
+            {asset.parsedMetadata['NTH_RATIO'] ?? 'Not specified'}
+            <div>This metadata does not change the precision used for amounts in this app.</div>
+          </div>
         </div>
         <div className='row'>
           <div className='title'>Minted by</div>

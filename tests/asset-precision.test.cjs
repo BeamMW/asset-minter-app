@@ -36,7 +36,7 @@ function harness() {
     formik: { useFormik: (options) => {
       config = options;
       values = values || { ...options.initialValues };
-      return { values, errors: {}, isValid: true, setFieldValue() {}, submitForm() {}, resetForm() {} };
+      return { values, errors: {}, isValid: true, validateForm: () => config.validate(values), setFieldValue() {}, submitForm() {}, resetForm() {} };
     } },
     '@core/api': { CreateAsset: (...args) => calls.push(args) },
     '@app/shared/constants': { ROUTES: { MAIN: { MAIN_PAGE: '/' } } },
@@ -85,7 +85,7 @@ test('wallet submission and copied CLI metadata always use the fixed ratio', asy
     const tree = h.render();
     const copy = find(tree, node => node.type === 'CopyIconButton');
     assert.ok(copy.props.onCopy().includes(`--asset_meta "${expected}"`));
-    find(tree, node => node.props.className === 'create-asset').props.onClick();
+    await find(tree, node => node.props.className === 'create-asset').props.onClick();
     assert.equal(h.calls.length, 1);
     assert.equal(h.calls[0][0], expected);
     assert.equal(h.calls[0][1], '100');
@@ -98,5 +98,18 @@ test('required asset fields still fail validation', async () => {
   for (const field of ['asset_name', 'unit_name', 'short_name', 'sm_unit_name', 'limit']) {
     assert.equal(errors[field], 'Required');
   }
+  assert.equal(h.calls.length, 0);
+});
+
+test('metadata values cannot inject a second ratio and submission revalidates', async () => {
+  const h = harness();
+  Object.assign(h.values, validFields);
+  await h.config.validate(h.values);
+  h.values.short_descr = 'Example;NTH_RATIO=8';
+  const errors = await h.config.validate(h.values);
+  assert.match(errors.short_descr, /Semicolons/);
+  h.states[2] = true;
+  assert.equal(find(h.render(), node => node.type === 'CopyIconButton'), undefined);
+  await find(h.render(), node => node.props.className === 'create-asset').props.onClick();
   assert.equal(h.calls.length, 0);
 });

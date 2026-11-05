@@ -125,7 +125,6 @@ const CreatePage = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [regCommand, setRegCommand] = useState('');
   const [isCommandVisible, setIsCommandVisible] = useState(false);
-  const [metadata, setMetadata] = useState('');
   const navigate = useNavigate();
 
   const generateMetadata = ({asset_name, unit_name, 
@@ -167,12 +166,12 @@ const CreatePage = () => {
         color
     } = formValues;
 
-    if (asset_name.length > 0 ||
+    if (!Object.values(formValues).some(value => value.includes(';')) &&
+        (asset_name.length > 0 ||
         unit_name.length > 0 ||
         short_name.length > 0 ||
-        sm_unit_name.length > 0) {
+        sm_unit_name.length > 0)) {
       const metadata = generateMetadata(formValues);
-      setMetadata(metadata);
       setRegCommand(generateRegCommand(metadata));
     } else {
       setRegCommand('');
@@ -250,6 +249,13 @@ const CreatePage = () => {
       errorsValidation.color = `Wrong color format`;
     }
 
+    // A separator in a value could inject a second NTH_RATIO metadata field.
+    Object.entries(formValues).forEach(([field, value]) => {
+      if (field !== 'limit' && value.includes(';')) {
+        errorsValidation[field] = 'Semicolons are not allowed in metadata values';
+      }
+    });
+
     return errorsValidation;
   };
 
@@ -275,8 +281,10 @@ const CreatePage = () => {
     validate: (e) => validate(e),
   });
 
-  const subm = () => {
-    CreateAsset(metadata, values.limit);
+  const subm = async () => {
+    const errors = await formik.validateForm();
+    if (Object.keys(errors).length > 0) return;
+    CreateAsset(generateMetadata(values), values.limit);
     navigate(ROUTES.MAIN.MAIN_PAGE);
   }
 
